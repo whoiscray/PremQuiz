@@ -81,7 +81,7 @@ function mostPerSeason(inputMap,ValToCompare) {
     
 
     if(ValToCompare == "goals") {
-        console.log("ValToCompre is true");
+        //console.log("ValToCompre is true");
         let playerSeasonData = goalScorers.get(chosenPlayersIterable[0]);
         //console.log(playerSeasonData);
         
@@ -99,7 +99,7 @@ function mostPerSeason(inputMap,ValToCompare) {
 
         questionString = `Who scored more goals in the ${seasonString} season of the Premier League?`;
 
-        console.log(questionString);
+        //console.log(questionString);
 
         //assign values to outputMap
         outputMap.set("question",questionString);
@@ -178,21 +178,17 @@ function pickThree(inputIterable) {
 
 //function to determine what player was selected and if it was the correct answer
 function playerButtonClicked(divID,chosenPlayerName,otherPlayerA,otherPlayerB,questionPlayerMap) {
-    console.log("divID",divID);
-    console.log("chosenPlayerName",chosenPlayerName);
+    //console.log("divID",divID);
+    //console.log("chosenPlayerName",chosenPlayerName);
     let isCorrect;
     let chosenPlayerScore = questionPlayerMap.get(chosenPlayerName);
     let otherPlayerAScore = questionPlayerMap.get(otherPlayerA);
     let otherPlayerBScore = questionPlayerMap.get(otherPlayerB);
 
-    console.log(chosenPlayerScore);
-    console.log(otherPlayerAScore);
-    console.log(otherPlayerBScore);
-
-
 
     if(chosenPlayerScore >= otherPlayerAScore && chosenPlayerScore >= otherPlayerBScore) {
         isCorrect = true;
+        answerTrue = true;
         $(divID).addClass("btn-success");
 
         $("#questionInput").html(`Correct!<br>${chosenPlayerName}: ${chosenPlayerScore}`)
@@ -235,8 +231,9 @@ function playerButtonClicked(divID,chosenPlayerName,otherPlayerA,otherPlayerB,qu
 
         }
         answerTrue == false;
-        //change Next question to 'Try Again'
         
+        
+        loadNextQuestion();
     }
 
 }
@@ -244,9 +241,21 @@ function playerButtonClicked(divID,chosenPlayerName,otherPlayerA,otherPlayerB,qu
 function loadNextQuestion() {
     if(answerTrue === true){
         questionLoop();
+        
     } else {
-        enableButton("#nextQuestion");
+        //console.log("answerTrue === false",answerTrue);
+        
+        //save score
+        
         $("#nextQuestion").html("Try Again");
+        enableButton("#nextQuestion");
+
+
+
+        //reload quiz
+        $("#nextQuestion").click(function() {
+            location.reload();
+        });
     }
 }
 
@@ -258,29 +267,44 @@ function enableButton(divID) {
     $(divID).removeAttr("disabled");
 }
 
+function saveScore(name,score) {
+    //may have to do a unique key to allow given name to occur multiple times, or only overwrite if new score is higher than old score
+    localStorage.setItem(name,score);
+    $("#highscores").append(`<div class="col p-1">${name} : ${score}</div><div class="w-100"></div>`)
+}
+
+
 let currentScore = 0;
-let answerTrue = true;
+let answerTrue = false;
 
 
 $( document ).ready(function() {
     console.log( "file loaded!" );
-
+    saveScore("Conor","5");
     questionLoop();
 
 });
 
 function questionLoop(){
+    console.log("questionloop called");
+
     //reset all player buttons
-    
-    
+    $("#playerA").removeClass("btn-success btn-warning btn-outline-success");
+    $("#playerB").removeClass("btn-success btn-warning btn-outline-success");
+    $("#playerC").removeClass("btn-success btn-warning btn-outline-success");
+
+    enableButton("#playerA");
+    enableButton("#playerB");
+    enableButton("#playerC");
+
     let questionArray = mostPerSeason(goalScorers,"goals");
 
-    console.log("mostPerSeason",questionArray);
+    //console.log("mostPerSeason",questionArray);
     let questionString = questionArray.get("question");
     questionArray.delete("question");
     
     let playerNames = questionArray.keys();
-    console.log(playerNames);
+    //console.log(playerNames);
 
     $("#questionInput").html(questionString);
     $("#playerA").html(playerNames.next().value);
@@ -311,5 +335,5 @@ function questionLoop(){
 
     //log current score
     $("#currentScore").html(currentScore);
-
 }
+
