@@ -1,11 +1,3 @@
-console.log("hello world");
-
-//taken from - https://www.w3schools.com/js/js_random.asp
-function getRndInteger(min, max) {
-  return Math.floor(Math.random() * (max - min) ) + min;
-}
-
-
 //set maps for Quiz answers
 let goalScorers = new Map();
 
@@ -69,15 +61,55 @@ premierLeagueAppearances.set(
                 "John Terry" : 492
 });
 
+//generate a random integer between min and max values
+//taken from - https://www.w3schools.com/js/js_random.asp
+function getRndInteger(min, max) {
+  return Math.floor(Math.random() * (max - min) ) + min;
+}
 
 //set question functions
 
-function mostPerSeason(inputMap) {
-    
+function mostPerSeason(inputMap,ValToCompare) {
+    let questionString;
+    let playerAScore,playerBScore,playerCScore;
+    let playerAName,playerBName,playerCName;
     //function to choose 3 random players
-    let outputMap = chooseThreePlayers(inputMap);
+    let chosenPlayersIterable = chooseThreePlayers(inputMap);
+    //console.log(chosenPlayersIterable);
+    let outputMap = new Map();
+    //choose goals, assists or appearances based on ValToCompare
+    
 
+    if(ValToCompare == "goals") {
+        console.log("ValToCompre is true");
+        let playerSeasonData = goalScorers.get(chosenPlayersIterable[0]);
+        //console.log(playerSeasonData);
+        
+        playerAName = chosenPlayersIterable[1];
+        playerBName = chosenPlayersIterable[2];
+        playerCName = chosenPlayersIterable[3];
 
+        console.log(playerAName);
+
+        playerAScore = playerSeasonData[playerAName];
+        playerBScore = playerSeasonData[playerBName];
+        playerCScore = playerSeasonData[playerCName];
+
+        let seasonString = chosenPlayersIterable[0] + "-" + (parseInt(chosenPlayersIterable[0],10) + 1);
+
+        questionString = `Who scored more goals in the ${seasonString} season of the Premier League?`;
+
+        console.log(questionString);
+
+        //assign values to outputMap
+        outputMap.set("question",questionString);
+        outputMap.set(playerAName,playerAScore);
+        outputMap.set(playerBName,playerBScore);
+        outputMap.set(playerCName,playerCScore);
+    }
+
+    
+    return outputMap;
 }
 
 function chooseThreePlayers(inputMap) {
@@ -102,16 +134,13 @@ function chooseThreePlayers(inputMap) {
     }
 
     
-    console.log("chosen Map Key " + chosenMapKey)
-
-    console.log(inputMap.get(chosenMapKey))
-
-
+    
+    //create return array, with player names, and the season chosen for this question
     let chosenPlayers = pickThree(inputMap.get(chosenMapKey));
 
-    //using chosenPlayers, use get method to pull entries for goalscorers, assists, appearances, etc...
+    chosenPlayers.unshift(chosenMapKey);
 
-    
+    return chosenPlayers;
 
 }
 
@@ -137,7 +166,7 @@ function pickThree(inputIterable) {
         }
     }
 
-    console.log(chosenNameIndexes);
+    //console.log(chosenNameIndexes);
 
     for(index in chosenNameIndexes){
         chosenNames.push(namesList[index]);
@@ -147,4 +176,23 @@ function pickThree(inputIterable) {
 
 }
 
-mostPerSeason(goalScorers);
+let questionArray = mostPerSeason(goalScorers,"goals");
+
+console.log("mostPerSeason",questionArray);
+let questionString = questionArray.get("question");
+questionArray.delete("question");
+
+$( document ).ready(function() {
+    console.log( "file loaded!" );
+
+    let playerNames = questionArray.keys();
+    console.log(playerNames);
+
+    $("#questionInput").html(questionString);
+    $("#playerA").html(playerNames.next().value);
+    $("#playerB").html(playerNames.next().value);
+    $("#playerC").html(playerNames.next().value);
+
+    
+});
+

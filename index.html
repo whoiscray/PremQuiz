@@ -6,8 +6,9 @@
     <title>Homepage</title>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
     <!-- REMOTE SCRIPTS -->
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     
@@ -19,7 +20,49 @@
 </head>
 <body>
     <header>
-        <h1>The Premier Quiz</h1>
+        <h1 class="text-center display-2">The Premier Quiz</h1>
     </header>
+
+    <div id="questionsContainer" class="container text-center border">
+        <div class="row align-items-center py-3">
+            <div id="questionBox" class="col float-start d-inline ">
+                <div id="questionInput" class="h4"></div>
+            </div>
+            <div id="playerPic" class="col float-end d-inline">
+                <img src="https://via.placeholder.com/300" alt="300x300 placeholder image" class="img-thumbnail float-end ">
+            </div>
+        </div>
+
+        <div class="row py-4">
+            <div class="col d-inline">
+                <button id="playerA"></button>
+            </div>
+            <div class="col d-inline">
+                <button id="playerB">Player B</button>
+            </div>
+            <div class="col d-inline">
+                <button id="playerC">Player C</button>
+            </div>
+        </div>
+        <div class="row py-4">
+            <div class="col">
+                <p>SCORE: <div id="currentScore"></div></p>
+            </div>
+        </div>
+    </div>
+    
+    <div id="highscoreContainer" class="container text-center border my-5">
+        <h3 class="display-4">High Scores</h3>
+        <div class="row">
+            <div class="col p-1">SCORE 1</div><div class="w-100"></div>
+            <div class="col p-1">SCORE 2</div><div class="w-100"></div>
+        </div>
+
+        <footer>
+            By Conor Creagh-Peschau
+        </footer>
+
+    </div>
+
 </body>
 </html>
