@@ -194,6 +194,17 @@ function playerButtonClicked(divID,chosenPlayerName,otherPlayerA,otherPlayerB,qu
     if(chosenPlayerScore >= otherPlayerAScore && chosenPlayerScore >= otherPlayerBScore) {
         isCorrect = true;
         $(divID).addClass("btn-success");
+
+        $("#questionInput").html(`Correct!<br>${chosenPlayerName}: ${chosenPlayerScore}`)
+
+        currentScore++;
+        $("#currentScore").html(currentScore);
+
+        enableButton("#nextQuestion");
+        
+        $("#nextQuestion").click(function() {
+            loadNextQuestion();
+        });
     } else if(chosenPlayerScore < otherPlayerAScore || chosenPlayerScore < otherPlayerBScore){
         isCorrect = false;
         $(divID).addClass("btn-danger");
@@ -201,35 +212,73 @@ function playerButtonClicked(divID,chosenPlayerName,otherPlayerA,otherPlayerB,qu
         //show correct answer (maybe use green border)
         if(otherPlayerAScore == otherPlayerBScore) {
             //if both others were high scores
-            $(`button:contains(${otherPlayerA})`).addClass("btn-success");
+            $(`button:contains('${otherPlayerA}')`).removeClass("btn-secondary").removeClass("btn-warning").addClass("btn-outline-success");
+            $(`button:contains('${otherPlayerB}')`).removeClass("btn-secondary").removeClass("btn-warning").addClass("btn-outline-success");
+
+            $("#questionInput").html(`Incorrect!<br>${otherPlayerA}: ${otherPlayerAScore}<br>${otherPlayerB}: ${otherPlayerBScore}`);
+
+
         }else if(otherPlayerAScore > otherPlayerBScore) {
             //if otherPlayerA is top score
+            $(`button:contains('${otherPlayerA}')`).removeClass("btn-secondary").removeClass("btn-warning").addClass("btn-outline-success");
+
+            $("#questionInput").html(`Incorrect!<br>${otherPlayerA}: ${otherPlayerAScore}`);
+
+            
+
         } else {
             //if otherPlayerB is top score
-        }
+            $(`button:contains('${otherPlayerB}')`).removeClass("btn-secondary").removeClass("btn-warning").addClass("btn-outline-success");
 
-        //
+            $("#questionInput").html(`Incorrect!<br>${otherPlayerB}: ${otherPlayerBScore}`);
+
+
+        }
+        answerTrue == false;
+        //change Next question to 'Try Again'
+        
     }
 
+}
 
-
+function loadNextQuestion() {
+    if(answerTrue === true){
+        questionLoop();
+    } else {
+        enableButton("#nextQuestion");
+        $("#nextQuestion").html("Try Again");
+    }
 }
 
 function disableButton(divID) {
     $(divID).attr("disabled","disabled");
 }
 
+function enableButton(divID) {
+    $(divID).removeAttr("disabled");
+}
+
 let currentScore = 0;
+let answerTrue = true;
 
-let questionArray = mostPerSeason(goalScorers,"goals");
-
-console.log("mostPerSeason",questionArray);
-let questionString = questionArray.get("question");
-questionArray.delete("question");
 
 $( document ).ready(function() {
     console.log( "file loaded!" );
 
+    questionLoop();
+
+});
+
+function questionLoop(){
+    //reset all player buttons
+    
+    
+    let questionArray = mostPerSeason(goalScorers,"goals");
+
+    console.log("mostPerSeason",questionArray);
+    let questionString = questionArray.get("question");
+    questionArray.delete("question");
+    
     let playerNames = questionArray.keys();
     console.log(playerNames);
 
@@ -260,9 +309,7 @@ $( document ).ready(function() {
         disableButton("#playerC");
     });
 
-    
-
     //log current score
     $("#currentScore").html(currentScore);
 
-});
+}
