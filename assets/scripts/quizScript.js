@@ -176,6 +176,51 @@ function pickThree(inputIterable) {
 
 }
 
+//function to determine what player was selected and if it was the correct answer
+function playerButtonClicked(divID,chosenPlayerName,otherPlayerA,otherPlayerB,questionPlayerMap) {
+    console.log("divID",divID);
+    console.log("chosenPlayerName",chosenPlayerName);
+    let isCorrect;
+    let chosenPlayerScore = questionPlayerMap.get(chosenPlayerName);
+    let otherPlayerAScore = questionPlayerMap.get(otherPlayerA);
+    let otherPlayerBScore = questionPlayerMap.get(otherPlayerB);
+
+    console.log(chosenPlayerScore);
+    console.log(otherPlayerAScore);
+    console.log(otherPlayerBScore);
+
+
+
+    if(chosenPlayerScore >= otherPlayerAScore && chosenPlayerScore >= otherPlayerBScore) {
+        isCorrect = true;
+        $(divID).addClass("btn-success");
+    } else if(chosenPlayerScore < otherPlayerAScore || chosenPlayerScore < otherPlayerBScore){
+        isCorrect = false;
+        $(divID).addClass("btn-danger");
+        
+        //show correct answer (maybe use green border)
+        if(otherPlayerAScore == otherPlayerBScore) {
+            //if both others were high scores
+            $(`button:contains(${otherPlayerA})`).addClass("btn-success");
+        }else if(otherPlayerAScore > otherPlayerBScore) {
+            //if otherPlayerA is top score
+        } else {
+            //if otherPlayerB is top score
+        }
+
+        //
+    }
+
+
+
+}
+
+function disableButton(divID) {
+    $(divID).attr("disabled","disabled");
+}
+
+let currentScore = 0;
+
 let questionArray = mostPerSeason(goalScorers,"goals");
 
 console.log("mostPerSeason",questionArray);
@@ -193,6 +238,31 @@ $( document ).ready(function() {
     $("#playerB").html(playerNames.next().value);
     $("#playerC").html(playerNames.next().value);
 
-    
-});
+    //call function for each answer when clicked, then disable buttons
+    $("#playerA").click(function(){
+        playerButtonClicked("#playerA",$("#playerA").html(),$("#playerB").html(),$("#playerC").html(),questionArray);
+        disableButton("#playerA");
+        disableButton("#playerB");
+        disableButton("#playerC");
+    });
 
+    $("#playerB").click(function(){
+        playerButtonClicked("#playerB",$("#playerB").html(),$("#playerA").html(),$("#playerC").html(),questionArray);
+        disableButton("#playerA");
+        disableButton("#playerB");
+        disableButton("#playerC");
+    });
+    
+    $("#playerC").click(function(){
+        playerButtonClicked("#playerC",$("#playerC").html(),$("#playerB").html(),$("#playerA").html(),questionArray);
+        disableButton("#playerA");
+        disableButton("#playerB");
+        disableButton("#playerC");
+    });
+
+    
+
+    //log current score
+    $("#currentScore").html(currentScore);
+
+});
