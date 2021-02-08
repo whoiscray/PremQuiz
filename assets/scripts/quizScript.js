@@ -221,8 +221,6 @@ function playerButtonClicked(divID,chosenPlayerName,otherPlayerA,otherPlayerB,qu
 
 function tryAgain() {
     
-    let username = new Date();
-    
     enableButton("#nextQuestion");
     $("#nextQuestion").html("Try Again?");
     sessionStorage.setItem("currentScore", 0);
@@ -237,7 +235,7 @@ function enableButton(divID) {
 }
 
 function waitForClick(inputMap) {
-    let returnValue;
+
     console.log("inputMap in waitforclick function",inputMap)
 
     $("#playerA").click(function(){
