@@ -40,26 +40,7 @@ goalScorers.set(
             "Romelu Lukaku" : 17},
 );
 
-//console.log(goalScorers.get("2012"));
 
-let goalAssists = new Map();
-
-goalAssists.set(
-    '2018',{"Mohammed Salah" : 10,
-            "Eden Hazard" : 15,
-            "Ryan Fraser" : 14,
-            "Trent Alexander-Arnold" : 12
-});
-
-let premierLeagueAppearances = new Map();
-
-premierLeagueAppearances.set(
-    'alltime',{"Gareth Barry" : 653,
-                "Ryan Giggs" : 632,
-                "James Milner" : 552,
-                "Emile Heskey" : 516,
-                "John Terry" : 492
-});
 
 //generate a random integer between min and max values
 //taken from - https://www.w3schools.com/js/js_random.asp
@@ -196,6 +177,8 @@ function playerButtonClicked(divID,chosenPlayerName,otherPlayerA,otherPlayerB,qu
         currentScore++;
         $("#currentScore").html(currentScore);
 
+        sessionStorage.setItem("currentScore", currentScore);
+
         enableButton("#nextQuestion");
         
         return isCorrect;
@@ -241,18 +224,20 @@ function playerButtonClicked(divID,chosenPlayerName,otherPlayerA,otherPlayerB,qu
 
 }
 
-function loadInNextQuestion() {
-
-}
 
 
 
 function tryAgain() {
+    
+    let username = new Date();
+    
     enableButton("#nextQuestion");
     $("#nextQuestion").html("Try Again?");
-    $("#nextQuestion").click(function() {
-        window.location.reload();
-    });
+    
+    
+    sessionStorage.setItem("currentScore", 0);
+
+
 }
 
 function disableButton(divID) {
@@ -261,12 +246,6 @@ function disableButton(divID) {
 
 function enableButton(divID) {
     $(divID).removeAttr("disabled");
-}
-
-function saveScore(name,score) {
-    //new score overwrites old score if higher
-    localStorage.setItem(name,score);
-    $("#highscores").append(`<div class="col p-1">${name} : ${score}</div><div class="w-100"></div>`)
 }
 
 function waitForClick(inputMap) {
@@ -320,7 +299,7 @@ function questionLoop(onClickCallback){
     //call function for each answer when clicked, then disable buttons
     
 
-    
+    currentScore = sessionStorage.getItem("currentScore");
 
     //log current score
     $("#currentScore").html(currentScore);
@@ -333,18 +312,22 @@ function questionLoop(onClickCallback){
 
 let currentScore = 0;
 let answerTrue = true;
-
+let username = new Date();
 
 $( document ).ready(function() {
     console.log( "file loaded!" );
-    saveScore("Conor","5");
+    //saveScore("Conor","5");
     
 
     while(answerTrue == true) {
         questionLoop(waitForClick);
 
-        console.log("got to end of main while loop... answerTrue ended up being!", answerTrue);
         
     }
+
+    $("#nextQuestion").click(function() {
+        
+        window.location.reload();
+    });
 
 });

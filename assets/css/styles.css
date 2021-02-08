@@ -1,3 +1,20 @@
 body {
     margin: 0 0 0 0;
+    background-color: white;
+    font-family: 'Lato', sans-serif;
 }
+
+#questionBox {
+    background-color: #37003c;
+    color: white;
+}
+
+#playerButtonsRow {
+    background-color: #09ff83;
+}
+
+#scoreRow {
+    background-color: #37003c;
+    color: white;
+}
+

@@ -23,6 +23,7 @@ This quiz website is primarily aimed at football fans, who would like to test th
   * Appearances
   * Chances Per Game
   * Clean Sheets (for goalkeepers)
+* A high score chart logging all previous scores. This will require knowledge of databases
 
 ## Technologies Used
 
@@ -40,24 +41,3 @@ This quiz website is primarily aimed at football fans, who would like to test th
 
 ## Credits
 
-question loop logic
-1. open loop
-2. display question
-3. feed player data into player buttons
-4. wait for click
-5. check if correct, disable player buttons
-
-either
-
-6. if correct, add 1 to score
-7. wait for 'next question' button click
-8. reset all button states (remove success, fail, etc)
-9. jump to start of loop
-
-or 
-
-6. if incorrect, set 'answerTrue' to false
-7. show correct answer
-8. save score
-9. show 'try again' button
-10. reload page
