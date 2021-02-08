@@ -6,7 +6,15 @@ A quiz about guessing goal scorers from various seasons of the Premier League
 ## UX
 ### Target Audiences
 This quiz website is primarily aimed at football fans, who would like to test their knowledge and memory of the top goalscorers of various leagues
-
+### User Stories
+* First Time Visitor
+  * As a first time visitor, I want to clearly understand the purpose of the site I am visiting
+  * As a first time visitor, I want to be able to clearly find all important parts of the website without too much scrolling or too many clicks on various links or buttons
+  * As a first time visitor, I want to know how a quiz should work, and that my options at any time are clear
+* Returning Visitor
+  * As a returning visitor, I want to see a simple layout that doesn't require relearning after a long time
+  * As a returning visitor, I'd like to have some feature that allows me to keep my score of the quiz if I unintentionally close my browser or my tabs
+  * As a returning visitor, I'd like to have enough variety in the questions asked to keep me entertained and not have too much repetition
 
 ## Features
 

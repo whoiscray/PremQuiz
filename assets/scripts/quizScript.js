@@ -56,15 +56,15 @@ function mostPerSeason(inputMap,ValToCompare) {
     let playerAName,playerBName,playerCName;
     //function to choose 3 random players
     let chosenPlayersIterable = chooseThreePlayers(inputMap);
-    //console.log(chosenPlayersIterable);
+    
     let outputMap = new Map();
     //choose goals, assists or appearances based on ValToCompare
     
 
     if(ValToCompare == "goals") {
-        //console.log("ValToCompre is true");
+        
         let playerSeasonData = goalScorers.get(chosenPlayersIterable[0]);
-        //console.log(playerSeasonData);
+        
         
         playerAName = chosenPlayersIterable[1];
         playerBName = chosenPlayersIterable[2];
@@ -99,8 +99,6 @@ function chooseThreePlayers(inputMap) {
     let mapKeys = inputMap.keys();
     let chosenMapKey;
 
-    //console.log(chosenKeyNum);
-
     //iterate through keys until the key position in the map matches the random chosenKeyNum number
     let loopCounter = 0;
     for(key of mapKeys) {
@@ -131,30 +129,34 @@ function pickThree(inputIterable) {
     let chosenNames = [];
 
     for(key in inputIterable) {
-        //console.log(key);
+        
         namesList.push(key);
 
     }
 
+    console.log("inputIterable",inputIterable);
 
 
     while(chosenNameIndexes.length < 3) {
         let chosenIndex = getRndInteger(0,namesList.length);
         let alreadyPicked = chosenNameIndexes.includes(chosenIndex);
 
+        //console.log("chosenIndex",chosenIndex);
+
         if(alreadyPicked == false) {
             chosenNameIndexes.push(chosenIndex);
         }
     }
 
-    //console.log(chosenNameIndexes);
+    console.log("chosenNameIndexes",chosenNameIndexes);
 
-    for(index in chosenNameIndexes){
-        chosenNames.push(namesList[index]);
+    for(loopCounter = 0; loopCounter < chosenNameIndexes.length;loopCounter++) {
+        console.log(`chosenNameIndexes ${loopCounter}`,chosenNameIndexes[loopCounter]);
+
+
+        chosenNames.push(namesList[chosenNameIndexes[loopCounter]]);
     }
-
     return chosenNames;
-
 }
 
 //function to determine what player was selected and if it was the correct answer
