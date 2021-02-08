@@ -1,7 +1,21 @@
 body {
     margin: 0 0 0 0;
-    background-color: white;
+    background-image: radial-gradient(#ff005c,#300034);
     font-family: 'Lato', sans-serif;
+    background-size: auto;
+}
+
+h1 {
+    color: white;
+}
+
+footer {
+    color: white;
+}
+
+
+#questionsContainer {
+    border-color: #09ff83;
 }
 
 #questionBox {
