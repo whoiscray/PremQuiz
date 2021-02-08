@@ -2,6 +2,7 @@ PremQuiz
 ======
 A quiz about guessing goal scorers from various seasons of the Premier League
 
+![PremQuiz webpage](../PremQuiz/assets/img/premquizcropped.png "PremQuiz Homepage")
 
 ## UX
 ### Target Audiences
@@ -77,6 +78,10 @@ The W3C HTML Validator was used to validate the main quiz page to ensure validit
 [W3C HTML Validator Results](https://validator.w3.org/nu/?doc=https%3A%2F%2Fcfconor.github.io%2FPremQuiz%2F)
 
 The W3C CSS validator was also used, however this fired errors due to some of the Bootstrap 5 properties used, which I decided was not worth discarding my Bootstrap tags for, as they are invaluable to the presentation of this project
+
+
+![PremQuiz webpage zoomed to show layout](../PremQuiz/assets/img/premquiztestingimage.png "PremQuiz Layout")
+
 
 ### First Time Visitor Goals
 * As a first time visitor, I want to clearly understand the purpose of the site I am visiting
