@@ -54,6 +54,7 @@ function mostPerSeason(inputMap,ValToCompare) {
     let questionString;
     let playerAScore,playerBScore,playerCScore;
     let playerAName,playerBName,playerCName;
+
     //function to choose 3 random players
     let chosenPlayersIterable = chooseThreePlayers(inputMap);
     
@@ -79,8 +80,6 @@ function mostPerSeason(inputMap,ValToCompare) {
         let seasonString = chosenPlayersIterable[0] + "-" + (parseInt(chosenPlayersIterable[0],10) + 1);
 
         questionString = `Who scored more goals in the ${seasonString} season of the Premier League?`;
-
-        //console.log(questionString);
 
         //assign values to outputMap
         outputMap.set("question",questionString);
@@ -141,8 +140,6 @@ function pickThree(inputIterable) {
         let chosenIndex = getRndInteger(0,namesList.length);
         let alreadyPicked = chosenNameIndexes.includes(chosenIndex);
 
-        //console.log("chosenIndex",chosenIndex);
-
         if(alreadyPicked == false) {
             chosenNameIndexes.push(chosenIndex);
         }
@@ -161,8 +158,6 @@ function pickThree(inputIterable) {
 
 //function to determine what player was selected and if it was the correct answer
 function playerButtonClicked(divID,chosenPlayerName,otherPlayerA,otherPlayerB,questionPlayerMap) {
-    //console.log("divID",divID);
-    //console.log("chosenPlayerName",chosenPlayerName);
     let isCorrect;
     let chosenPlayerScore = questionPlayerMap.get(chosenPlayerName);
     let otherPlayerAScore = questionPlayerMap.get(otherPlayerA);
@@ -213,8 +208,6 @@ function playerButtonClicked(divID,chosenPlayerName,otherPlayerA,otherPlayerB,qu
             $(`button:contains('${otherPlayerB}')`).removeClass("btn-secondary").removeClass("btn-warning").addClass("btn-outline-success");
 
             $("#questionInput").html(`Incorrect!<br>${otherPlayerB}: ${otherPlayerBScore}`);
-
-
         }
         
         disableButton("#playerA");
@@ -222,13 +215,8 @@ function playerButtonClicked(divID,chosenPlayerName,otherPlayerA,otherPlayerB,qu
         disableButton("#playerC");
         tryAgain();
         return isCorrect;
-        
-        
     } 
-
 }
-
-
 
 
 function tryAgain() {
@@ -237,11 +225,7 @@ function tryAgain() {
     
     enableButton("#nextQuestion");
     $("#nextQuestion").html("Try Again?");
-    
-    
     sessionStorage.setItem("currentScore", 0);
-
-
 }
 
 function disableButton(divID) {
@@ -275,6 +259,8 @@ function waitForClick(inputMap) {
 function questionLoop(onClickCallback){
     console.log("questionloop called");
     let questionArray;
+
+
     //reset all player buttons
     $("#playerA").removeClass("btn-success btn-warning btn-outline-success");
     $("#playerB").removeClass("btn-success btn-warning btn-outline-success");
@@ -291,7 +277,6 @@ function questionLoop(onClickCallback){
     questionArray.delete("question");
     
     let playerNames = questionArray.keys();
-    //console.log(playerNames);
 
     $("#questionInput").html(questionString);
     $("#playerA").html(playerNames.next().value);
@@ -320,7 +305,6 @@ let username = new Date();
 
 $( document ).ready(function() {
     console.log( "file loaded!" );
-    //saveScore("Conor","5");
     
 
     while(answerTrue == true) {

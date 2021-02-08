@@ -10,7 +10,17 @@ h1 {
 }
 
 footer {
-    color: white;
+    color: #09ff83;
+}
+
+a {
+    text-decoration: none;
+    color: #09ff83;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #09ff844b;
 }
 
 .border {
