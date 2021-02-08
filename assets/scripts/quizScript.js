@@ -198,11 +198,10 @@ function playerButtonClicked(divID,chosenPlayerName,otherPlayerA,otherPlayerB,qu
 
         enableButton("#nextQuestion");
         
-        $("#nextQuestion").click(function() {
-            loadNextQuestion();
-        });
+        return isCorrect;
     } else if(chosenPlayerScore < otherPlayerAScore || chosenPlayerScore < otherPlayerBScore){
         isCorrect = false;
+        
         $(divID).addClass("btn-danger");
         
         //show correct answer (maybe use green border)
@@ -230,33 +229,30 @@ function playerButtonClicked(divID,chosenPlayerName,otherPlayerA,otherPlayerB,qu
 
 
         }
-        answerTrue == false;
+        
+        disableButton("#playerA");
+        disableButton("#playerB");
+        disableButton("#playerC");
+        tryAgain();
+        return isCorrect;
         
         
-        loadNextQuestion();
-    }
+    } 
 
 }
 
-function loadNextQuestion() {
-    if(answerTrue === true){
-        questionLoop();
-        
-    } else {
-        //console.log("answerTrue === false",answerTrue);
-        
-        //save score
-        
-        $("#nextQuestion").html("Try Again");
-        enableButton("#nextQuestion");
+function loadInNextQuestion() {
+
+}
 
 
 
-        //reload quiz
-        $("#nextQuestion").click(function() {
-            location.reload();
-        });
-    }
+function tryAgain() {
+    enableButton("#nextQuestion");
+    $("#nextQuestion").html("Try Again?");
+    $("#nextQuestion").click(function() {
+        window.location.reload();
+    });
 }
 
 function disableButton(divID) {
@@ -268,26 +264,34 @@ function enableButton(divID) {
 }
 
 function saveScore(name,score) {
-    //may have to do a unique key to allow given name to occur multiple times, or only overwrite if new score is higher than old score
+    //new score overwrites old score if higher
     localStorage.setItem(name,score);
     $("#highscores").append(`<div class="col p-1">${name} : ${score}</div><div class="w-100"></div>`)
 }
 
+function waitForClick(inputMap) {
+    let returnValue;
+    console.log("inputMap in waitforclick function",inputMap)
 
-let currentScore = 0;
-let answerTrue = false;
+    $("#playerA").click(function(){
+        return playerButtonClicked("#playerA",$("#playerA").html(),$("#playerB").html(),$("#playerC").html(),inputMap);
+    });
+
+    $("#playerB").click(function(){
+        return playerButtonClicked("#playerB",$("#playerB").html(),$("#playerA").html(),$("#playerC").html(),inputMap);
+    });
+    
+    $("#playerC").click(function(){
+        return playerButtonClicked("#playerC",$("#playerC").html(),$("#playerB").html(),$("#playerA").html(),inputMap);
+    });
+
+    
+}
 
 
-$( document ).ready(function() {
-    console.log( "file loaded!" );
-    saveScore("Conor","5");
-    questionLoop();
-
-});
-
-function questionLoop(){
+function questionLoop(onClickCallback){
     console.log("questionloop called");
-
+    let questionArray;
     //reset all player buttons
     $("#playerA").removeClass("btn-success btn-warning btn-outline-success");
     $("#playerB").removeClass("btn-success btn-warning btn-outline-success");
@@ -297,9 +301,9 @@ function questionLoop(){
     enableButton("#playerB");
     enableButton("#playerC");
 
-    let questionArray = mostPerSeason(goalScorers,"goals");
+    questionArray = mostPerSeason(goalScorers,"goals");
 
-    //console.log("mostPerSeason",questionArray);
+    
     let questionString = questionArray.get("question");
     questionArray.delete("question");
     
@@ -311,29 +315,36 @@ function questionLoop(){
     $("#playerB").html(playerNames.next().value);
     $("#playerC").html(playerNames.next().value);
 
+    console.log("mostPerSeason",questionArray);
+    answerTrue = onClickCallback(questionArray);
     //call function for each answer when clicked, then disable buttons
-    $("#playerA").click(function(){
-        playerButtonClicked("#playerA",$("#playerA").html(),$("#playerB").html(),$("#playerC").html(),questionArray);
-        disableButton("#playerA");
-        disableButton("#playerB");
-        disableButton("#playerC");
-    });
-
-    $("#playerB").click(function(){
-        playerButtonClicked("#playerB",$("#playerB").html(),$("#playerA").html(),$("#playerC").html(),questionArray);
-        disableButton("#playerA");
-        disableButton("#playerB");
-        disableButton("#playerC");
-    });
     
-    $("#playerC").click(function(){
-        playerButtonClicked("#playerC",$("#playerC").html(),$("#playerB").html(),$("#playerA").html(),questionArray);
-        disableButton("#playerA");
-        disableButton("#playerB");
-        disableButton("#playerC");
-    });
+
+    
 
     //log current score
     $("#currentScore").html(currentScore);
 }
 
+
+
+
+
+
+let currentScore = 0;
+let answerTrue = true;
+
+
+$( document ).ready(function() {
+    console.log( "file loaded!" );
+    saveScore("Conor","5");
+    
+
+    while(answerTrue == true) {
+        questionLoop(waitForClick);
+
+        console.log("got to end of main while loop... answerTrue ended up being!", answerTrue);
+        
+    }
+
+});
