@@ -13,9 +13,13 @@ footer {
     color: white;
 }
 
+.border {
+    border: 1px solid #09ff83!important;
+}
 
 #questionsContainer {
     border-color: #09ff83;
+    
 }
 
 #questionBox {
@@ -23,12 +27,16 @@ footer {
     color: white;
 }
 
+#questionInput {
+    color: #09ff83;
+}
+
 #playerButtonsRow {
-    background-color: #09ff83;
+    background-color: white;
 }
 
 #scoreRow {
     background-color: #37003c;
-    color: white;
+    color: #09ff83;
 }
 

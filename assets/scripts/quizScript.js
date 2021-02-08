@@ -182,7 +182,9 @@ function playerButtonClicked(divID,chosenPlayerName,otherPlayerA,otherPlayerB,qu
         sessionStorage.setItem("currentScore", currentScore);
 
         enableButton("#nextQuestion");
-        
+        disableButton("#playerA");
+        disableButton("#playerB");
+        disableButton("#playerC");
         return isCorrect;
     } else if(chosenPlayerScore < otherPlayerAScore || chosenPlayerScore < otherPlayerBScore){
         isCorrect = false;
