@@ -1,4 +1,5 @@
 //set maps for Quiz answers
+//each entry is a key value pair with the key being the season played, value being the players and their relevant goals scored for that season
 let goalScorers = new Map();
 
 goalScorers.set(
@@ -48,30 +49,26 @@ function getRndInteger(min, max) {
   return Math.floor(Math.random() * (max - min) ) + min;
 }
 
-//set question functions
 
-function mostPerSeason(inputMap,ValToCompare) {
+//assign the players and questions, uses inputMap as the data to retrieve the players from, the ValToCompare is set to "goals" to choose goals, but can be later updated to choose other parameters in a future release 
+function setQuestionAndPlayers(inputMap,ValToCompare) {
     let questionString;
     let playerAScore,playerBScore,playerCScore;
     let playerAName,playerBName,playerCName;
 
-    //function to choose 3 random players
+    
     let chosenPlayersIterable = chooseThreePlayers(inputMap);
     
     let outputMap = new Map();
-    //choose goals, assists or appearances based on ValToCompare
+    
     
 
     if(ValToCompare == "goals") {
-        
         let playerSeasonData = goalScorers.get(chosenPlayersIterable[0]);
-        
-        
+    
         playerAName = chosenPlayersIterable[1];
         playerBName = chosenPlayersIterable[2];
         playerCName = chosenPlayersIterable[3];
-
-        console.log(playerAName);
 
         playerAScore = playerSeasonData[playerAName];
         playerBScore = playerSeasonData[playerBName];
@@ -91,18 +88,16 @@ function mostPerSeason(inputMap,ValToCompare) {
     
     return outputMap;
 }
-
+//choose 3 random players from the inputMap argument
 function chooseThreePlayers(inputMap) {
     let mapItemCount = inputMap.size;
     let chosenKeyNum = getRndInteger(0,mapItemCount);
     let mapKeys = inputMap.keys();
     let chosenMapKey;
 
-    //iterate through keys until the key position in the map matches the random chosenKeyNum number
     let loopCounter = 0;
     for(key of mapKeys) {
         if(chosenKeyNum == loopCounter) {
-            //if the random chosenKeyNum matches the current loop counter, assign the key to chosenMapKey and break, we now know what season we want to ask about
             chosenMapKey = key;
             break;
         }
@@ -113,29 +108,24 @@ function chooseThreePlayers(inputMap) {
 
     
     
-    //create return array, with player names, and the season chosen for this question
+    //create return array, with player names, and the season chosen for this question. the argument passed is the season, with the players list within that object
     let chosenPlayers = pickThree(inputMap.get(chosenMapKey));
 
     chosenPlayers.unshift(chosenMapKey);
 
     return chosenPlayers;
-
 }
 
+//from the inputIterable, extract all the players from a particular season and return three random players 
 function pickThree(inputIterable) {
     let namesList = [];
     let chosenNameIndexes = [];
     let chosenNames = [];
 
     for(key in inputIterable) {
-        
         namesList.push(key);
-
     }
-
-    console.log("inputIterable",inputIterable);
-
-
+    //while less than 3 players have been chosen
     while(chosenNameIndexes.length < 3) {
         let chosenIndex = getRndInteger(0,namesList.length);
         let alreadyPicked = chosenNameIndexes.includes(chosenIndex);
@@ -145,10 +135,8 @@ function pickThree(inputIterable) {
         }
     }
 
-    console.log("chosenNameIndexes",chosenNameIndexes);
-
     for(loopCounter = 0; loopCounter < chosenNameIndexes.length;loopCounter++) {
-        console.log(`chosenNameIndexes ${loopCounter}`,chosenNameIndexes[loopCounter]);
+        
 
 
         chosenNames.push(namesList[chosenNameIndexes[loopCounter]]);
@@ -186,9 +174,9 @@ function playerButtonClicked(divID,chosenPlayerName,otherPlayerA,otherPlayerB,qu
         
         $(divID).addClass("btn-danger");
         
-        //show correct answer (maybe use green border)
+        //show correct answer
         if(otherPlayerAScore == otherPlayerBScore) {
-            //if both others were high scores
+            //if both others were higher scores
             $(`button:contains('${otherPlayerA}')`).removeClass("btn-secondary").removeClass("btn-warning").addClass("btn-outline-success");
             $(`button:contains('${otherPlayerB}')`).removeClass("btn-secondary").removeClass("btn-warning").addClass("btn-outline-success");
 
@@ -218,9 +206,8 @@ function playerButtonClicked(divID,chosenPlayerName,otherPlayerA,otherPlayerB,qu
     } 
 }
 
-
+//enable the user to try again, changing the 'next question' to 'try again' and reseting the score 
 function tryAgain() {
-    
     enableButton("#nextQuestion");
     $("#nextQuestion").html("Try Again?");
     sessionStorage.setItem("currentScore", 0);
@@ -233,11 +220,8 @@ function disableButton(divID) {
 function enableButton(divID) {
     $(divID).removeAttr("disabled");
 }
-
+//callback function to ensure that the while loop below waits for one of the player buttons to be clicked when a question is asked
 function waitForClick(inputMap) {
-
-    console.log("inputMap in waitforclick function",inputMap)
-
     $("#playerA").click(function(){
         return playerButtonClicked("#playerA",$("#playerA").html(),$("#playerB").html(),$("#playerC").html(),inputMap);
     });
@@ -249,14 +233,11 @@ function waitForClick(inputMap) {
     $("#playerC").click(function(){
         return playerButtonClicked("#playerC",$("#playerC").html(),$("#playerB").html(),$("#playerA").html(),inputMap);
     });
-
-    
 }
 
-
+//controls the sequence of assignment and manipulation to the HTML 
 function questionLoop(onClickCallback){
-    console.log("questionloop called");
-    let questionArray;
+    let questionMap;
 
 
     //reset all player buttons
@@ -268,21 +249,20 @@ function questionLoop(onClickCallback){
     enableButton("#playerB");
     enableButton("#playerC");
 
-    questionArray = mostPerSeason(goalScorers,"goals");
-
+    //assign the questionMap to contain the question, and the three player buttons that need to be assigned
+    questionMap = setQuestionAndPlayers(goalScorers,"goals");
     
-    let questionString = questionArray.get("question");
-    questionArray.delete("question");
+    let questionString = questionMap.get("question");
+    questionMap.delete("question");
     
-    let playerNames = questionArray.keys();
+    let playerNames = questionMap.keys();
 
     $("#questionInput").html(questionString);
     $("#playerA").html(playerNames.next().value);
     $("#playerB").html(playerNames.next().value);
     $("#playerC").html(playerNames.next().value);
 
-    console.log("mostPerSeason",questionArray);
-    answerTrue = onClickCallback(questionArray);
+    answerTrue = onClickCallback(questionMap);
     //call function for each answer when clicked, then disable buttons
     
 
@@ -293,27 +273,16 @@ function questionLoop(onClickCallback){
 }
 
 
-
-
-
-
 let currentScore = 0;
 let answerTrue = true;
 let username = new Date();
 
 $( document ).ready(function() {
-    console.log( "file loaded!" );
-    
-
     while(answerTrue == true) {
         questionLoop(waitForClick);
-
-        
     }
 
     $("#nextQuestion").click(function() {
-        
         window.location.reload();
     });
-
 });
