@@ -1,12 +1,17 @@
 <html>
     <head>
-        {% csrf_token %}
+
     </head>
     <body>
-        <p>
-            INDEX PAGE
-
-            PLAYER LIST: {{ player_list }}
-        </p>
+        <h1>
+            INDEX PAGE - SHOWING LIST OF PLAYERS
+        </h1>
+        <ul>
+            {% for player in player_list %}
+            <li>
+                {{ player.id }} {{ player.player_firstname }} {{ player.player_lastname }} {{ player.date_added }}
+            </li>
+            {% endfor %}
+        </ul>
     </body>
 </html>
