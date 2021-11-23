@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from .models import Player, PlayerForm
+from .models import Player, PlayerForm, Season, Goals, Appearances
 
 import pdb
 
@@ -9,9 +9,10 @@ import pdb
 
 def index(request):
     player_list = Player.objects.order_by('-id')[:5]
-
+    season_list = Season.objects.order_by('-id')[:5]
     context = {
         'player_list': player_list,
+        'season_list': season_list,
     }
     return render(request, 'quiz/index.html', context)
 

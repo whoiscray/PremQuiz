@@ -4,14 +4,40 @@
     </head>
     <body>
         <h1>
-            INDEX PAGE - SHOWING LIST OF PLAYERS
+            INDEX PAGE
         </h1>
-        <ul>
+        <hr>
+        <h3>Players</h3>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Date Added</th>
+            </tr>
             {% for player in player_list %}
-            <li>
-                {{ player.id }} {{ player.player_firstname }} {{ player.player_lastname }} {{ player.date_added }}
-            </li>
+            <tr>
+                <td>{{ player.id }}</td>
+                <td>{{ player.player_firstname }}</td>
+                <td>{{ player.player_lastname }}</td>
+                <td>{{ player.date_added }}</td>
+            </tr>
             {% endfor %}
-        </ul>
+        </table>
+        <h3>Season</h3>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Start Year</th>
+                <th>Date Added</th>
+            </tr>
+            {% for season in season_list %}
+            <tr>
+                <td>{{ season.id }}</td>
+                <td>{{ season.season_year }}</td>
+                <td>{{ season.date_added }}</td>
+            </tr>
+            {% endfor %}
+        </table>
     </body>
 </html>

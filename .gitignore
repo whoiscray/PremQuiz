@@ -1,4 +1,4 @@
 *.sqlite3
 *.pyc
 
-prem_quiz/quiz/__pycache__/**
+prem_quiz/**/__pycache__
